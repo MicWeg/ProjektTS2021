@@ -3,6 +3,19 @@ import matplotlib.pyplot as plt
 import networkx as nx
 import re
 
+def check_machine(machine, init_state, end_state):
+    # TODO czy init_state traktowac jako zupelnie poczatkowy??
+    if init_state and end_state in (machine.states_map.values()):
+        # TODO przejsc do init_state i sprobowac przejsc do end_state
+        # print(machine.transitions)
+        pass
+    else:
+        print("Unknown states")
+        return None
+
+
+    # return trans_list
+
 # define states for a master (way of passing args to class)
 options = [
     {"name": "IDLE", "initial": True, "value": "idle"},  # 0
@@ -23,6 +36,21 @@ form_to = [
     [3, [1, 2, 4]],
     [4, []],
 ]
+
+# TODO Stworzyc dane do rysowania grafow - dodac pozostale grafy
+G = nx.DiGraph()
+G.add_edges_from([("IDLE", "A"), ("A", "B")])
+edge_labels = {("IDLE", "A"): "temp1", ("A", "B"): "temp2"}
+pos = nx.spring_layout(G)
+
+def draw_graph(graph, state, pos, edge_labels):
+    plt.title('Test') 
+    nx.draw(graph,pos,edge_color='black',width=1,linewidths=1,\
+    node_size=500,node_color='pink',\
+    labels={node:node for node in graph.nodes()})
+    nx.draw_networkx_edge_labels(graph, pos, edge_labels=edge_labels, font_color="red")
+    nx.draw_networkx(graph.subgraph(state), pos=pos, node_color='red')
+    plt.show()
 
 # create transitions for a master (as a dict)
 master_transitions = {}
@@ -86,24 +114,18 @@ class Generator(StateMachine):
 
 supervisor = Generator.create_master(master_states, master_transitions)
 print('\n' + str(supervisor))
-
-# TODO Zrobic funkcje do rysowania
-plt.title('Test')
-G = nx.DiGraph()
-G.add_edges_from([("IDLE", "A"),("A","B")])
-pos = nx.spring_layout(G)   
-nx.draw(G,pos,edge_color='black',width=1,linewidths=1,\
-node_size=500,node_color='pink',\
-labels={node:node for node in G.nodes()})
-nx.draw_networkx_edge_labels(G, pos, edge_labels={("IDLE", "A"): "temp1", ("A","B"): "temp2"}, font_color="red")
-nx.draw_networkx(G.subgraph('IDLE'), pos=pos, node_color='red')
-plt.show()
+check_machine(supervisor, 'A', 'F')
 
 print(f"Current state: {supervisor.current_state}")
 for i in form_to[0][1]:
     print(master_transitions[f'm_0_{i}'])
 
 print("Write 'q' to quit")
+
+state_name = str(supervisor.current_state)
+state_name = re.search('(?<=\')\w+',state_name)
+
+draw_graph(G, state_name.group(0), pos, edge_labels)
 
 while True:
     try:
@@ -115,21 +137,19 @@ while True:
         master_transitions[inp]._run(supervisor)
         print(f"Current state: {supervisor.current_state}")
 
-        state_name = str(supervisor.current_state)
-        state_name = re.search('(?<=\')\w+',state_name)
-        plt.title('Test')  
-        nx.draw(G,pos,edge_color='black',width=1,linewidths=1,\
-        node_size=500,node_color='pink',\
-        labels={node:node for node in G.nodes()})
-        nx.draw_networkx_edge_labels(G, pos, edge_labels={("IDLE", "A"): "temp1", ("A","B"): "temp2"}, font_color="red")
-        nx.draw_networkx(G.subgraph(state_name.group(0)), pos=pos, node_color='red')
-        plt.show()
-
         for i in form_to[int(inp[4])][1]:
             print(master_transitions[f'm_{int(inp[4])}_{i}'])
 
+        state_name = str(supervisor.current_state)
+        state_name = re.search('(?<=\')\w+',state_name)
+        draw_graph(G, state_name.group(0), pos, edge_labels)
+
     except:
         print("Something went wrong. Try again")
+
+
+
+
 
 
 # path_1 = ["m_0_1", "m_1_2", "m_2_1", "m_1_3", "m_3_4"]
@@ -162,3 +182,4 @@ while True:
 #         # TODO: automata 3 (for) slave3
 #         ...
 #         print("Supervisor done!")
+
