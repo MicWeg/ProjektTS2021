@@ -38,25 +38,24 @@ while True:
             
 
         if supervisor.current_state.name == "Ruch do ladunku":
-            print("\nWaiting for state response from robot")
+            draw_graph(G, supervisor.current_state.name, pos, edge_labels,"Magazynowanie",1)
             flag = 0
-            state_flag = 10
             while flag == 0:
-                state = srv_client()
+                print("\nWaiting for state response from robot\nPress Enter to check state")
+                key = input()
+                if key == "":
+                    state = srv_client()
+                elif key == "q":
+                    break
 
-                if state == 0 and state != state_flag:
-                    draw_graph(G_nav, navigation.current_state.name, pos_nav, edge_labels_nav, "Navigation", 2)
-                    state_flag = state
-                elif state == 1 and state != state_flag:
-                    master_transitions_nav['m_0_1']._run(navigation)
-                    draw_graph(G_nav, navigation.current_state.name, pos_nav, edge_labels_nav, "Navigation", 2)
-                    state_flag = state
-                    
-                    # if state == 1:
-                    #     master_transitions_nav['m_0_1']._run(navigation)
-                    #     while state == 1:
-                    #         state = srv_client(G_nav, navigation.current_state.name, pos_nav, edge_labels_nav)
-            
+                # TODO change ._run if already in state
+                if state == 0:
+                    print(f"Current state: IDLE")
+                    draw_graph(G_nav, "IDLE", pos_nav, edge_labels_nav, "Navigation", 2)
+                elif state == 1:
+                    master_transitions_nav["m_0_1"]._run(navigation)
+                    print(f"Current state: {navigation.current_state}")
+                    draw_graph(G_nav, navigation.current_state.name, pos_nav, edge_labels_nav, "Navigation", 2)            
 
         print("\nTo transition from one state to another write identifier (visible above) for that transition (for example 'm_0_1'). Write 'q' to quit")
         # state_name = str(supervisor.current_state)
