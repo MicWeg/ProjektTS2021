@@ -80,6 +80,7 @@ def draw_graph(graph, state, pos, edge_labels,title,figure):
     plt.ion()
     plt.figure(figure)
     plt.title(title) 
+    plt.pause(0.1)
     # TODO try adding axis
     nx.draw(graph,pos,edge_color='green',width=2,linewidths=1,\
     node_size=1000,node_color='pink',\
