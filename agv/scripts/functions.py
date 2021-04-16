@@ -7,7 +7,6 @@ from agv.srv import *
 
 
 def check_machine(machine, init_state, end_state):
-    # TODO czy init_state traktowac jako zupelnie poczatkowy??
     if init_state and end_state in (machine.states_map.values()):
 
         for i in range(len(machine.states)):
@@ -21,22 +20,48 @@ def check_machine(machine, init_state, end_state):
             list_trans_id.append(machine.transitions[i].identifier)
 
         list_paths = []
-        temp_list = []
-        while True:
-            for trans in list_trans_id:
-                if trans[2] == init_state_id:
-                    temp_list.append(trans)
-                    if temp_list not in list_paths:
-                        list_paths.append(temp_list)
-                    print(temp_list,list_paths)
-            break
+        for trans in list_trans_id:
+            if trans[2] == init_state_id:
+                temp_list = []
+                temp_list.append(trans)
+                if temp_list not in list_paths:
+                    list_paths.append([temp_list])
+                for i in range(len(list_trans_id)):
+                    temp_trans = list_trans_id.copy()
+                    for trans_new in temp_trans:
+                        if trans_new[2] == temp_list[-1][4] and trans_new not in temp_list:
+                            temp_list.append(trans_new)
+                            temp_trans.remove(trans_new)
+                        if [temp_list] not in list_paths:
+                            list_paths.append([temp_list])
+
+
+        flag_start = 0
+        flag_end = 0
+        trans_list = []
+        print(list_paths) 
+        for paths in list_paths:
+            for i in range(len(paths[0])):
+                if paths[0][i][2] == init_state_id:
+                    flag_start = 1
+                    start_id = i
+                if paths[0][i][4] == end_state_id:
+                    flag_end = 1
+                    end_id = i
+            if flag_start == 1 and flag_end == 1 and start_id <= end_id and paths[0][start_id:end_id+1] not in trans_list:
+                trans_list.append(paths[0][start_id:end_id+1])
+            flag_end = 0
+            flag_start = 0
+
+        if not trans_list:
+            return None
+        else:
+            return trans_list
 
     else:
         print("Unknown states")
         return None
 
-
-    # return trans_list
 
 
 def srv_client():
@@ -55,6 +80,8 @@ def draw_graph(graph, state, pos, edge_labels,title,figure):
     plt.ion()
     plt.figure(figure)
     plt.title(title) 
+    plt.pause(0.1)
+    # TODO try adding axis
     nx.draw(graph,pos,edge_color='green',width=2,linewidths=1,\
     node_size=1000,node_color='pink',\
     labels={node:node for node in graph.nodes()})
