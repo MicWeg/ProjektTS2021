@@ -11,20 +11,35 @@ from graphs import *
 print(f"Current state: {supervisor.current_state}\n\nPossible transitions:")
 for i in form_to[0][1]:
     print(master_transitions[f'm_0_{i}'])
-print("\nTo transition from one state to another write identifier (visible above) for that transition (for example 'm_0_1'). Write 'q' to quit")
 
-# state_name = str(supervisor.current_state)
-# state_name = re.search('(?<=\')\w+', state_name).group(0)
+print("\nTo transition from one state to another write identifier (visible above) for that transition (for example 'm_0_1'). Write 'c' to check machine. Write 'q' to quit")
+
+state_name = str(supervisor.current_state)
+state_name = re.search('(?<=\')\w+', state_name).group(0)
 
 draw_graph(G, supervisor.current_state.name, pos, edge_labels,"Magazynowanie",1)
+draw_graph(G_nav, "Czekanie na nowy ladunek", pos_nav, edge_labels_nav, "Navigation", 2)
 
-# TODO add option to use check_machine from consol
-# print(check_machine(supervisor, 'Ruch do ladunku', 'Czekanie na zwolnienie miejsca'))
-
-    
 while True:
     try:
         inp = input()
+
+        if inp == 'c':
+            try:
+                mach = input('Machines: \'supervisor\', \'navigation\'.\nChoose machine: ')
+                init = input('Write init state: ')
+                end = input('Write end state: ')
+                if mach == 'supervisor':
+                    print(check_machine(supervisor, init, end))
+                elif mach == 'navigation':
+                    print(check_machine(navigation, init, end))
+                else:
+                    print('Unknown machine')
+
+            except Exception as e:
+                print(e)
+                break
+            break
 
         if inp == 'q':
             break
@@ -36,19 +51,22 @@ while True:
             print(master_transitions[f'm_{int(inp[4])}_{i}'])
             
         # TODO add for different states needing navigation //// Maybe ignore changing here and only draw once and write states in console?
-        if supervisor.current_state.name == "Ruch do ladunku":
-            # draw_graph(G, supervisor.current_state.name, pos, edge_labels,"Magazynowanie",1)
+        # TODO do we need to use ._run for machine or we can ignore that ?
+        # TODO change ._run if already in state
+        # TODO do we need to use ._run in this case ? or is it obsolete? - there is a possibility of missing a state
+        # if supervisor.current_state.name == "Ruch do ladunku":
+        #     # draw_graph(G, supervisor.current_state.name, pos, edge_labels,"Magazynowanie",1)
 
-            while True:
-                try:
-                    state = srv_client()
-                    if state == 0:
-                        draw_graph(G_nav, "IDLE", pos_nav, edge_labels_nav, "Navigation", 2)
-                    if state == 1:
-                        draw_graph(G_nav, "A", pos_nav, edge_labels_nav, "Navigation", 2)
+        #     while True:
+        #         try:
+        #             state = srv_client()
+        #             if state == 0:
+        #                 draw_graph(G_nav, "IDLE", pos_nav, edge_labels_nav, "Navigation", 2)
+        #             if state == 1:
+        #                 draw_graph(G_nav, "A", pos_nav, edge_labels_nav, "Navigation", 2)
 
-                except Exception as e:
-                    print(e)
+        #         except Exception as e:
+        #             print(e)
             
         
         #     while flag == 0:
@@ -82,8 +100,7 @@ while True:
         #         elif key == "q":
         #             break
 
-        #         # TODO change ._run if already in state
-        #         # TODO do we need to use ._run in this case ? or is it obsolete? - there is a possibility of missing a state
+
         #         if state == 0:
         #             # if state_nr != 0:
         #             #     state_nr = 0
