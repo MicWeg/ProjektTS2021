@@ -39,18 +39,10 @@ supervisor = Generator.create_master(master_states, master_transitions)
 
 
 # Navigation
-# option_nav = [
-#     {"name": "IDLE", "initial": True, "value": "idle"},  # 0
-#     {"name": "Ruch do ladunku", "initial": False, "value": "Ruch do ladunku"},  # 1
-#     {"name": "Zgloszenie problemu", "initial": False, "value": "Zgloszenie problemu"},  # 2
-#     {"name": "Zaladowanie ladunku", "initial": False, "value": "Zaladowanie ladunku"},  # 3
-#     {"name": "Ruch do magazynu", "initial": False, "value": "Ruch do magazynu"}, # 4
-#     {"name": "Odlozenie ladunku", "initial": False, "value": "Odlozenie ladunku"}, # 5
-#     {"name": "Czekanie na zwolnienie miejsca", "initial": False, "value": "Czekanie na zwolnienie miejsca"}]  # 6
 option_nav = [
-    {"name": "IDLE", "initial": True, "value": "idle"},  # 0
-    {"name": "A", "initial": False, "value": "a"},  # 1
-    {"name": "B", "initial": False, "value": "b"},  # 2
+    {"name": "Czekanie na nowy ladunek", "initial": True, "value": "Czekanie na nowy ladunek"},  # 0
+    {"name": "Planowanie trasy i ruch", "initial": False, "value": "Planowanie trasy i ruch"},  # 1
+    {"name": "Zatrzymanie robota", "initial": False, "value": "Zatrzymanie robota"} # 2
 ]
 
 # create State objects for a master
@@ -70,9 +62,9 @@ master_states_nav = [State(**opt) for opt in option_nav]
 #     [6, [5]]
 # ]
 form_to_nav = [
-    [0, [0,1]],
+    [0, [1]],
     [1, [0,2]],
-    [2, [0]]
+    [2, [0,1]]
 ]
 
 # create transitions for a master (as a dict)

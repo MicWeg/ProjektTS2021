@@ -39,7 +39,7 @@ def check_machine(machine, init_state, end_state):
         flag_start = 0
         flag_end = 0
         trans_list = []
-        print(list_paths) 
+
         for paths in list_paths:
             for i in range(len(paths[0])):
                 if paths[0][i][2] == init_state_id:
@@ -82,11 +82,19 @@ def draw_graph(graph, state, pos, edge_labels,title,figure):
     plt.title(title) 
     plt.pause(0.1)
     # TODO try adding axis
-    nx.draw(graph,pos,edge_color='green',width=2,linewidths=1,\
-    node_size=1000,node_color='pink',\
-    labels={node:node for node in graph.nodes()})
-    nx.draw_networkx_edge_labels(graph, pos, edge_labels=edge_labels, font_color="red",font_size=5)
-    nx.draw_networkx(graph.subgraph(state), pos=pos, node_color='red')
+    if title == 'Navigation':
+        nx.draw(graph,pos,edge_color='green',connectionstyle='arc3,rad=0.1',width=3,linewidths=3,\
+        node_size=1000,node_color='pink',\
+        labels={node:node for node in graph.nodes()})
+        nx.draw_networkx_edge_labels(graph, pos, edge_labels=edge_labels[0],label_pos=0.15, font_color="red",font_size=5)
+        nx.draw_networkx_edge_labels(graph, pos, edge_labels=edge_labels[1],label_pos=0.15, font_color="blue",font_size=5)
+        nx.draw_networkx(graph.subgraph(state), pos=pos, node_color='red')
+    else:
+        nx.draw(graph,pos,edge_color='green',width=2,linewidths=1,\
+        node_size=1000,node_color='pink',\
+        labels={node:node for node in graph.nodes()})
+        nx.draw_networkx_edge_labels(graph, pos, edge_labels=edge_labels, font_color="red",font_size=5)
+        nx.draw_networkx(graph.subgraph(state), pos=pos, node_color='red')
 
 
 def create_trans(master_transitions,master_states,form_to):
