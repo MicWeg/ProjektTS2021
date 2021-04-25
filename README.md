@@ -14,10 +14,12 @@ cd ~/catkin_ws/src
 git clone https://github.com/MicWeg/ProjektTS2021.git
 ```
 
-Następnie aby widoczny był również folder mir_robot wpisz następujące polecenia w terminal:
+Pobrać mir_robot i uruchomić zgodnie z sekcją "Gazebo demo (multiple robots)"
 ```
-cd ProjektTS2021
-git checkout mir
-git submodule init
-git submodule update
+git clone https://github.com/K-F-P/mir_robot
+```
+
+Uruchomić skrypt
+```
+rosrun agv new_main.py
 ```
