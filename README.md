@@ -19,7 +19,8 @@ Pobrać mir_robot i uruchomić zgodnie z sekcją "Gazebo demo (multiple robots)"
 git clone https://github.com/K-F-P/mir_robot
 ```
 
-Uruchomić skrypt
+Uruchomić skrypty
 ```
+rosrun agv moving_real.py
 rosrun agv new_main.py
 ```
