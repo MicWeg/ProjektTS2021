@@ -4,7 +4,7 @@ State Machine project
 Michał Węgrzynowski, Kajetan Pietrzak, Justyna Sikorska
 
 # Tymczasowy graf
-![Graph](https://github.com/MicWeg/ProjektTS2021/blob/main/graph.png)
+![Graph](https://github.com/MicWeg/ProjektTS2021/blob/main/graph_state.png)
 
 # Pobieranie repozytorium
 
