@@ -21,6 +21,10 @@ git clone https://github.com/K-F-P/mir_robot
 
 Uruchomić skrypty
 ```
-rosrun agv moving_real.py
 rosrun agv new_main.py
+rosrun agv state_server.py
+```
+Uruchomić skrypt po dojśćiu do stanu "Ruch do ładunku"
+```
+rosrun agv laithlin_move.py
 ```
