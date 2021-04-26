@@ -11,7 +11,6 @@ def check_machine(machine, init_state, end_state):
     if init_state and end_state in (machine.states_map.values()):
 
         if list(machine.states_map.values())[0] == 'Czekanie na nowy ladunek':
-            # TODO check if Multi is still necessary
             Gnav = nx.DiGraph(G_nav)
             paths = sorted(nx.all_simple_edge_paths(Gnav,init_state,end_state))
             trans = []
