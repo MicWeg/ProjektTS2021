@@ -49,11 +49,9 @@ while True:
         if inp != 'c':
             master_transitions[inp]._run(supervisor)
             draw_graph(G, supervisor.current_state.name, pos, edge_labels,"Magazynowanie",1)
-
-            if supervisor.current_state.name == "Ruch do ladunku" or "Ruch do magazynu":
+            if supervisor.current_state.name == "Ruch do ladunku" or supervisor.current_state.name == "Ruch do magazynu":
                 draw_graph(G, supervisor.current_state.name, pos, edge_labels,"Magazynowanie",1)
-                if supervisor.current_state.name == "Ruch do magazynu":
-                    for i in range(10):
+                for i in range(10):
                         pub.publish(True)
                         rospy.sleep(i*0.1)
 
@@ -84,17 +82,6 @@ while True:
 
                     except Exception as e:
                         print(e)
-
-                print(f"Current state: {supervisor.current_state}\n\nPossible transitions:")
-                for i in form_to[int(inp[4])][1]:
-                    print(master_transitions[f'm_{int(inp[4])}_{i}'])
-                draw_graph(G, supervisor.current_state.name, pos, edge_labels,"Magazynowanie",1)
-                inp = input('Input: ')
-                master_transitions[inp]._run(supervisor)
-                draw_graph(G, supervisor.current_state.name, pos, edge_labels,"Magazynowanie",1)
-
-                print("\nTo transition from one state to another write identifier (visible above) for that transition (for example 'm_0_1'). Write 'c' to check machine. Write 'q' to quit")
-                continue
 
             print(f"Current state: {supervisor.current_state}\n\nPossible transitions:")
             for i in form_to[int(inp[4])][1]:

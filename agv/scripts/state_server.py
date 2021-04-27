@@ -12,7 +12,7 @@ def state_callback(data):
 
 def handler(req):
     global state
-    rospy.Subscriber("mir2/move_base/status", GoalStatusArray,state_callback)
+    rospy.Subscriber("mir/move_base/status", GoalStatusArray,state_callback)
     return state_srvResponse(state)
 
 def state_server():
