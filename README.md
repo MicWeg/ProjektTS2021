@@ -24,7 +24,7 @@ Uruchomić skrypty
 rosrun agv new_main.py
 rosrun agv state_server.py
 ```
-Uruchomić skrypt po dojśćiu do stanu "Ruch do ładunku"
+Uruchomić skrypt po dojściu do stanu "Ruch do ładunku"
 ```
 rosrun agv laithlin_move.py
 ```
