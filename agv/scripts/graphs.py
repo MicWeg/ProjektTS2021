@@ -1,7 +1,6 @@
 import networkx as nx
 
-
-# Storage
+# Main
 G = nx.DiGraph()
 G.add_edges_from([("IDLE", "Ruch do ladunku"),
                  ("Ruch do ladunku", "Zgloszenie problemu"),
@@ -23,10 +22,6 @@ edge_labels = {("IDLE", "Ruch do ladunku"): "Nowy ladunek",
                ("Odlozenie ladunku", "IDLE"): "Potwierdzenie wykonania zadania",
                ("Czekanie na zwolnienie miejsca", "Odlozenie ladunku"): "Wykrycie wolnego miejsca"}
                
-# pos = nx.spring_layout(G)
-# pos = nx.circular_layout(G)
-# pos = nx.kamada_kawai_layout(G)
-# pos = nx.spectral_layout(G)
 pos = nx.planar_layout(G)
 
 
@@ -45,9 +40,4 @@ edge_labels_nav = [{("Czekanie na nowy ladunek", "Planowanie trasy i ruch"): "No
                ("Planowanie trasy i ruch", "Czekanie na nowy ladunek"): "Wykonanie ruchu",
                ("Zatrzymanie robota", "Czekanie na nowy ladunek"): "Przerwanie zadania"}]
 
-
-# pos_nav = nx.spring_layout(G_nav)
-# pos_nav = nx.circular_layout(G_nav)
-# pos_nav = nx.kamada_kawai_layout(G_nav)
-# pos_nav = nx.spectral_layout(G_nav)
 pos_nav = nx.planar_layout(G_nav)

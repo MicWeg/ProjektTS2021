@@ -2,7 +2,7 @@ from statemachine import StateMachine, State, Transition
 from functions import create_trans
 from generator import Generator
 
-# Storage
+# Main
 # define states for a master (way of passing args to class)
 options = [
     {"name": "IDLE", "initial": True, "value": "idle"},  # 0
@@ -16,8 +16,7 @@ options = [
 # create State objects for a master
 # ** -> unpack dict to args
 master_states = [State(**opt) for opt in options]
-# for i in range(len(master_states)):
-#     master_states[i].identifier = f'{i}'
+
 
 # valid transitions for a master (indices of states from-to)
 form_to = [
@@ -48,19 +47,7 @@ option_nav = [
 # create State objects for a master
 # ** -> unpack dict to args
 master_states_nav = [State(**opt) for opt in option_nav]
-# for i in range(len(master_states_nav)):
-#     master_states_nav[i].identifier = f'{i}'
 
-# valid transitions for a master (indices of states from-to)
-# form_to_nav = [
-#     [0, [0, 1]],
-#     [1, [2, 3]],
-#     [2, [0]],
-#     [3, [4]],
-#     [4, [5, 6]],
-#     [5, [0]],
-#     [6, [5]]
-# ]
 form_to_nav = [
     [0, [1]],
     [1, [0,2]],

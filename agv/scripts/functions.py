@@ -63,7 +63,6 @@ def draw_graph(graph, state, pos, edge_labels,title,figure):
     plt.figure(figure)
     plt.title(title) 
     plt.pause(0.01)
-    # TODO try adding axis
     if title == 'Navigation':
         nx.draw(graph,pos,edge_color='green',connectionstyle='arc3,rad=0.1',width=3,linewidths=3,\
         node_size=1000,node_color='pink',\

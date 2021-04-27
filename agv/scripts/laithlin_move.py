@@ -29,7 +29,6 @@ mir2_position = [[14.2, 12.7, 11.4, 11.0],
 pos_m1 = [0.0, 0.0]
 pos_m2 = [0.0, 0.0]
 
-#moj kod
 m1_m = PoseStamped()
 m2_m = PoseStamped()
 
@@ -39,7 +38,6 @@ mir_status = [-1, -1]
 #flaga startowa jak rowna zero to startuje
 # f1 = 0
 
-#moj kod
 
 f_mir1 = 0
 f_mir2 = 0
@@ -54,11 +52,9 @@ state_flag = False
 
 collision = False
 
-#to jest wlasny pub
 pub = rospy.Publisher('/mir_state', String, queue_size=10)
 cancel_pub = rospy.Publisher("/mir2/move_base/cancel", GoalID, queue_size=1)
 
-#moj kod
 mir1_pub = rospy.Publisher("mir/move_base_simple/goal", PoseStamped, queue_size=5)
 mir2_pub = rospy.Publisher("mir2/move_base_simple/goal", PoseStamped, queue_size=5)
 
@@ -68,49 +64,30 @@ def mir1_feed(data):
     location = data.feedback.base_position.pose
     status = data.status.status
     print(1, status)
-    #print(1, status, location.position.x, location.position.y)
-    # pos_m1_x = float(location.position.x)
-    # pos_m1_y = float(location.position.y)
     pos_m1 = [float(location.position.x), float(location.position.y)]
     mir_status[0] = status
-    # rospy.sleep(0.5)
 
-    #moj kod
     global done1
     if(not done1):
         done1 = True
 
 
 def mir2_feed(data):
-    # global pos_m2_x, pos_m2_y
     global pos_m2, mir_status, state_flag
     
     location = data.feedback.base_position.pose
     status = data.status.status
     print(2, status)
-    #print(2, status, location.position.x, location.position.y)
-    # pos_m2_x = float(location.position.x)
-    # pos_m2_y = float(location.position.y)
     pos_m2 = [float(location.position.x), float(location.position.y)]
     mir_status[1] = status
-    # rospy.sleep(0.5)
 
-    # moj kod
     global done2
     if (not done2):
         done2 = True
 
-# def mir1_status(data):
-#     print(data.status_list.goal_id.status)
-#
-#
-# def mir2_status(data):
-#     print(data.status_list.goal_id.status)
-#
-#
+
 def mir1_move(p_x, p_y, o_z):
-    # to ponizej bylo tylko odkomentowane
-    #mir1_pub = rospy.Publisher("mir/move_base_simple/goal", PoseStamped, queue_size=5)
+
 
     p = PoseStamped()
 
@@ -127,20 +104,10 @@ def mir1_move(p_x, p_y, o_z):
     p.pose.orientation.z = o_z
     p.pose.orientation.w = 1.0
 
-    # rospy.sleep(1)
-
-    # to ponizej bylo tylko odkomentowane
-    # mir1_pub.publish(p)
-    #
-    # print("done mir1")
-
-    #moj kod
     return p
 
 
 def mir2_move(p_x, p_y, o_z):
-    # to ponizej bylo tylko odkomentowane
-    #mir2_pub = rospy.Publisher("mir2/move_base_simple/goal", PoseStamped, queue_size=5)
 
     p = PoseStamped()
 
@@ -157,13 +124,6 @@ def mir2_move(p_x, p_y, o_z):
     p.pose.orientation.z = o_z
     p.pose.orientation.w = 1.0
 
-    # rospy.sleep(1)
-
-    #to ponizej bylo tylko odkomentowane
-    #mir2_pub.publish(p)
-    #print("done mir 2")
-
-    #moj kod
     return p
 
 
@@ -173,11 +133,6 @@ def timer_callback(event):
     global mir_status, mir2_pub, m1_m, m2_m, \
         send1, send2, collision, started1, started2, cancel_pub, state_flag
 
-    #to bylo odkomentowane
-    # while not rospy.is_shutdown():
-    #     pub.publish(mir_status)
-
-    #moj kod
 
     if collision is True:
         cancel_msg = GoalID()
@@ -207,32 +162,22 @@ def timer_callback(event):
 
 def start():
     global f_mir1, f_mir2
-    # mir1_move(mir1_position[0][0], mir1_position[1][0], mir1_position[2][0])
-    # mir2_move(mir2_position[0][0], mir2_position[1][0], mir2_position[2][0])
 
-    #moj kod
     global m1_m, m2_m
     m1_m = mir1_move(mir1_position[0][0], mir1_position[1][0], mir1_position[2][0])
     m2_m = mir2_move(mir2_position[0][0], mir2_position[1][0], mir2_position[2][0])
-    # if(not started1):
-    #     started1 = True
-    #     started2 = True
-
-    #moj kod
 
     f_mir1 = 1
     f_mir2 = 1
 
-#moj kod
 
 def mir1_reach(m_r):
     global m1_m, f_mir1, send1, started1
     false_failure = False
 
-    # while not m_r.status_list:
-    #     rospy.sleep(1)
+
     stat = m_r.status_list[0]
-    #print(stat.status)
+
 
     stat_go1 = stat.status
 
@@ -287,21 +232,21 @@ def mir1_reach(m_r):
             print("mir 1 krok 2")
             f_mir1 = 2
             send1 = False
-            #started1 = True
+
 
         elif (f_mir1 == 2) and (send1 is True):
             m1_m = mir1_move(mir1_position[0][2], mir1_position[1][2], mir1_position[2][2])
             print("mir 1 krok 3")
             f_mir1 = 0
             send1 = False
-            #started1 = True
+
 
         elif (f_mir1 == 0) and (send1 is True):
             m1_m = mir1_move(mir1_position[0][0], mir1_position[1][0], mir1_position[2][0])
             print("mir 1 krok 1")
             f_mir1 = 1
             send1 = False
-            #started1 = True
+
 
         false_failure = False
 
@@ -310,11 +255,8 @@ def mir2_reach(m_r):
 
     false_failure = False
 
-    # while not m_r.status_list:
-    #     rospy.sleep(1)
 
     stat = m_r.status_list[0]
-    #print(stat.status)
 
     stat_go2 = stat.status
 
@@ -371,21 +313,21 @@ def mir2_reach(m_r):
             print("mir 2 krok 2")
             f_mir2 = 2
             send2 = False
-            #started2 = True
+
 
         elif (f_mir2 == 2) and (send2 is True):
             m2_m = mir2_move(mir2_position[0][2], mir2_position[1][2], mir2_position[2][2])
             print("mir 2 krok 3")
             f_mir2 = 0
             send2 = False
-            #started2 = True
+
 
         elif (f_mir2 == 0) and (send2 is True):
             m2_m = mir2_move(mir2_position[0][0], mir2_position[1][0], mir2_position[2][0])
             print("mir 2 krok 1")
             f_mir2 = 1
             send2 = False
-            #started2 = True
+
 
         false_failure = False
 
