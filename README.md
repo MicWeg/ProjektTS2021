@@ -7,6 +7,7 @@ Michał Węgrzynowski, Kajetan Pietrzak, Justyna Sikorska
 ![Graph](https://github.com/MicWeg/ProjektTS2021/blob/main/graph.png)
 
 # Pobieranie repozytorium
+!Uwaga - występuje stosunkowo duże obciążenie i programy reagują z opóźnieniem
 
 Skopiuj repozytorium:
 ```
