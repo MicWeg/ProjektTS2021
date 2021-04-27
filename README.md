@@ -20,7 +20,7 @@ Pobrać mir_robot i uruchomić zgodnie z sekcją "Gazebo demo (multiple robots)"
 git clone https://github.com/K-F-P/mir_robot
 ```
 
-Uruchomić skrypty
+Uruchomić skrypty (proszę zignorować początkowe errory dla skryptu laithlin_move.py)
 ```
 rosrun agv state_server.py
 rosrun agv laithlin_move.py
