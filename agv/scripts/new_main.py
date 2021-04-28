@@ -51,10 +51,10 @@ while True:
             draw_graph(G, supervisor.current_state.name, pos, edge_labels,"Magazynowanie",1)
             if supervisor.current_state.name == "Ruch do ladunku" or supervisor.current_state.name == "Ruch do magazynu":
                 draw_graph(G, supervisor.current_state.name, pos, edge_labels,"Magazynowanie",1)
+                print("Waiting for robots to finish moving\n")
                 for i in range(10):
                         pub.publish(True)
                         rospy.sleep(i*0.1)
-
                 while True:
                     try:
                         state = srv_client()
